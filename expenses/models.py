@@ -16,3 +16,9 @@ class Expense(models.Model):
     description = models.TextField()
     owner = models.ForeignKey(User,on_delete=models.CASCADE)
     date = models.DateField(null=False,blank=False)
+
+    def __str__(self) -> str:
+        return f'{self.category} - {self.description}'
+    
+    class Meta:
+        ordering = ['-date']

@@ -1,14 +1,14 @@
 from rest_framework import generics,permissions
-from .models import Expense
-from .serializers import ExpenseSerializers
+from .models import Income
+from .serializers import IncomeSerializers
 from .permissions import IsOwner
 
 # Create your views here.
 
 
-class ExpenseListAPIView(generics.ListCreateAPIView):
-    queryset = Expense.objects.all()
-    serializer_class = ExpenseSerializers
+class IncomeListAPIView(generics.ListCreateAPIView):
+    queryset = Income.objects.all()
+    serializer_class = IncomeSerializers
     permission_classes = [permissions.IsAuthenticated]
 
     def perform_create(self, serializer):
@@ -19,12 +19,13 @@ class ExpenseListAPIView(generics.ListCreateAPIView):
 
 
 
-class ExpenseDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Expense.objects.all()
-    serializer_class = ExpenseSerializers
+class IncomeDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Income.objects.all()
+    serializer_class = IncomeSerializers
     permission_classes = [permissions.IsAuthenticated,IsOwner]
     lookup_field = 'id'
 
     
     def get_queryset(self):
         return self.queryset.filter(owner = self.request.user)
+
