@@ -24,7 +24,7 @@ class ExpenseSummaryStats(APIView):
         income = Income.objects.filter(owner = request.user, date__gte=ayear_ago, date__lte=today_date)
         total_expenses = expenses.aggregate(Sum('amount'))['amount__sum'] or 0
         total_income = income.aggregate(Sum('amount'))['amount__sum'] or 0
-        return {'income': total_income, 'expenses': total_expenses, 'difference': total_income - total_expenses}
+        return {'Total_income': total_income, 'Total_expenses': total_expenses, 'Your_balance': total_income - total_expenses}
 
 
     def get(self,request):
@@ -55,6 +55,7 @@ class IncomeSourcesSummaryStats(APIView):
         income = Income.objects.filter(owner = request.user, date__gte=ayear_ago, date__lte=today_date)
         final = {}
         sources = list(set(map(self.get_category,income)))
+        total_income = income.aggregate(Sum('amount'))['amount__sum'] or 0
         for source in sources:
             final[source] = self.get_amount_for_source(income, source)
-        return response.Response({'income_sources_data':final},status=status.HTTP_200_OK)
+        return response.Response({'income_sources_data':final,'total_income':total_income},status=status.HTTP_200_OK)
